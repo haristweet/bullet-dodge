@@ -95,6 +95,13 @@ addEventListener('keydown', e => {
 });
 addEventListener('keyup', e => keys.delete(e.code));
 
+// 他アプリ起動・タブ非表示・フォーカス喪失で自動ポーズ（復帰時は手動でカウントダウン再開）
+function autoPause() {
+  if (gs === 'play') { gs = 'pause'; PSG.suspend(); keys.clear(); }
+}
+document.addEventListener('visibilitychange', () => { if (document.hidden) autoPause(); });
+addEventListener('blur', autoPause);
+
 C.addEventListener('mousemove', e => {
   [mouseX, mouseY] = canvasXY(e.clientX, e.clientY);
   mouseMoved = true;
